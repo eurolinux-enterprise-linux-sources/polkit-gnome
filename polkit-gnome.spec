@@ -1,7 +1,7 @@
 Summary: PolicyKit integration for the GNOME desktop
 Name: polkit-gnome
 Version: 0.96
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 URL: http://www.freedesktop.org/wiki/Software/PolicyKit
 Group: Applications/System
@@ -14,6 +14,11 @@ Patch0: add-mr.patch
 # updated translations
 # https://bugzilla.redhat.com/show_bug.cgi?id=589233
 Patch1: polkit-gnome-translations.patch
+
+# Force focus on the polkit dialog when showing it.
+# https://bugzilla.gnome.org/show_bug.cgi?id=676076
+# https://bugzilla.redhat.com/show_bug.cgi?id=872918
+Patch2: polkit-gnome-0.96-force-focus.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: gtk2-devel
@@ -64,6 +69,7 @@ Development documentation for polkit-gnome.
 %patch0 -p1 -b .add-mr
 cp %{SOURCE1} po
 %patch1 -p1 -b .translations
+%patch2 -p1 -b .force-focus
 
 %build
 %configure --enable-gtk-doc --disable-introspection
@@ -105,6 +111,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Apr 04 2014 David King <dking@redhat.com> - 0.96-4
+- Focus the polkit dialog when showing it (#872918)
+
 * Fri May 14 2010 Matthias Clasen <mclasen@redhat.com> - 0.96-3
 - Updated translations
 Resolves: #589233
